@@ -1,4 +1,6 @@
+from pathlib import Path
 from fastapi import APIRouter, HTTPException, Security, status
+from fastapi.responses import FileResponse
 from fastapi.security import APIKeyHeader
 from bs4 import BeautifulSoup
 from app.manager import browser_manager
@@ -17,6 +19,13 @@ async def verify_api_key(api_key: str = Security(api_key_header)) -> None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid API key"
         )
+
+
+@router.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse(
+        Path(__file__).parent.parent / "icons/code.png", media_type="image/png"
+    )
 
 
 @router.post("/fetch", dependencies=[Security(verify_api_key)])

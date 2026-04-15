@@ -20,8 +20,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Impresario",
-    version="1.0",
+    title=f"[{ENV}] Impresario",
+    version="🚀",
     docs_url=None,
     lifespan=lifespan,
 )
@@ -35,7 +35,8 @@ if ENV == "DEV" or LOG_REQUESTS or LOG_RESPONSE:
 
 init_scalar_docs(
     app,
-    title="Impresario API Reference",
+    title=f"[{ENV}] Impresario API Doc",
+    favicon_url="/favicon.ico",
     authentication={"preferredSecurityScheme": "ApiKeyAuth"},
     persist_auth=True,
 )
