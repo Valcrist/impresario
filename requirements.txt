@@ -1,0 +1,7 @@
+fastapi>=0.115
+uvicorn[standard]>=0.29
+playwright>=1.44
+beautifulsoup4>=4.12
+lxml>=5.2
+httpx>=0.27
+toolbox[api] @ git+https://github.com/Valcrist/toolbox.git
