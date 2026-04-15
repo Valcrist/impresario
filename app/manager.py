@@ -1,4 +1,5 @@
 import asyncio
+import platform
 from contextlib import asynccontextmanager
 from playwright.async_api import (
     async_playwright,
@@ -28,7 +29,14 @@ class BrowserManager:
         async with self._lock:
             if self._browser is None:
                 self._playwright = await async_playwright().start()
-                self._browser = await self._playwright.firefox.launch(headless=HEADLESS)
+                env = (
+                    {"DISPLAY": ":99"}
+                    if not HEADLESS and platform.system() != "Windows"
+                    else None
+                )
+                self._browser = await self._playwright.firefox.launch(
+                    headless=HEADLESS, env=env
+                )
                 self._context = await self._browser.new_context()
                 if not HEADLESS:
                     background = await self._context.new_page()
