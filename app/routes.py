@@ -24,7 +24,8 @@ async def verify_api_key(api_key: str = Security(api_key_header)) -> None:
 @router.get("/favicon.ico", include_in_schema=False)
 async def favicon():
     return FileResponse(
-        Path(__file__).parent.parent / "icons/code.png", media_type="image/png"
+        Path(__file__).parent.parent / "static/icons/favicon.ico",
+        media_type="image/x-icon",
     )
 
 
