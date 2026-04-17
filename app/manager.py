@@ -12,7 +12,7 @@ from toolbox.utils import get_env
 
 
 MAX_TABS = get_env("MAX_TABS", 10, verbose=1)
-HEADLESS = get_env("HEADLESS", False, verbose=1)
+HEADLESS = get_env("HEADLESS", True, verbose=1)
 IDLE_TIMEOUT = get_env("IDLE_TIMEOUT", 900, verbose=1)  # seconds (15 min)
 
 

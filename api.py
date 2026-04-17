@@ -11,6 +11,7 @@ ENV = get_env("ENV", "PROD", verbose=1)
 HOT_RELOAD = False if ENV == "PROD" else get_env("HOT_RELOAD", False, verbose=1)
 LOG_REQUESTS = get_env("LOG_REQUESTS", False, verbose=1)
 LOG_RESPONSE = get_env("LOG_RESPONSE", False, verbose=1)
+API_PORT = get_env("API_PORT", 8080, verbose=1)
 
 
 @asynccontextmanager
@@ -46,4 +47,4 @@ sys.stdout.reconfigure(line_buffering=True)
 
 
 if __name__ == "__main__":
-    run_server("api:app", ENV, port=8077, hot_reload=HOT_RELOAD)
+    run_server("api:app", ENV, port=API_PORT, hot_reload=HOT_RELOAD)
