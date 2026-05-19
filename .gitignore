@@ -168,8 +168,9 @@ test-*.py
 *.csv
 *-journal
 
-.claude/
 CLAUDE.md
+.claude/
+zzz/
 
 .token
 *.token

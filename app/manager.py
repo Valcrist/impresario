@@ -1,13 +1,8 @@
 import asyncio
 import platform
 from contextlib import asynccontextmanager
-from playwright.async_api import (
-    async_playwright,
-    Playwright,
-    Browser,
-    BrowserContext,
-    Page,
-)
+from cloakbrowser import launch_async
+from playwright.async_api import Browser, BrowserContext, Page
 from toolbox.utils import get_env
 
 
@@ -20,7 +15,6 @@ class BrowserManager:
     def __init__(self) -> None:
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
-        self._playwright: Playwright | None = None
         self._lock = asyncio.Lock()
         self._semaphore = asyncio.Semaphore(MAX_TABS)
         self._idle_task: asyncio.Task | None = None
@@ -28,15 +22,12 @@ class BrowserManager:
     async def _ensure_browser(self) -> BrowserContext:
         async with self._lock:
             if self._browser is None:
-                self._playwright = await async_playwright().start()
                 env = (
                     {"DISPLAY": ":99"}
                     if not HEADLESS and platform.system() != "Windows"
                     else None
                 )
-                self._browser = await self._playwright.firefox.launch(
-                    headless=HEADLESS, env=env
-                )
+                self._browser = await launch_async(headless=HEADLESS, env=env)
                 self._context = await self._browser.new_context()
                 if not HEADLESS:
                     background = await self._context.new_page()
@@ -60,9 +51,6 @@ class BrowserManager:
             if self._browser is not None:
                 await self._browser.close()
                 self._browser = None
-            if self._playwright is not None:
-                await self._playwright.stop()
-                self._playwright = None
 
     async def close(self) -> None:
         """Cancel idle timer and shut down the browser cleanly."""
